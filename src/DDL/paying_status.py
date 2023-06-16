@@ -13,10 +13,10 @@ sql = """
 
 
 CREATE TABLE paying_status (
-    paying_status_id int(11) NOT NULL AUTO_INCREMENT,
-    paying_status_name varchar(256) NOT NULL,
-    PRIMARY KEY (`paying_status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+   paying_status_id int(11) NOT NULL AUTO_INCREMENT,
+   paying_status_name varchar(256) NOT NULL,
+   PRIMARY KEY (`paying_status_id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 
 """

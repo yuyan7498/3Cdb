@@ -12,7 +12,7 @@ cursor = conn.cursor()
 sql = """
 
 
-CREATE TABLE order (
+CREATE TABLE orders (
     order_id int(11) NOT NULL AUTO_INCREMENT,
     sum int(11) NOT NULL,
     paying_id int(11) NOT NULL,
@@ -26,7 +26,8 @@ CREATE TABLE order (
     CONSTRAINT order_status_id_fkey FOREIGN KEY (`order_status_id`) REFERENCES order_status (`order_status_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT paying_id_fkey FOREIGN KEY (`paying_id`) REFERENCES paying_type (`paying_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT paying_status_id_fkey FOREIGN KEY (`paying_status_id`) REFERENCES paying_status (`paying_status_id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 
 """
