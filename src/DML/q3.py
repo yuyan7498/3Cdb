@@ -1,26 +1,25 @@
-#
+#查找高雄市每家店鋪都缺貨的產品。
 
 import mariadb
 
 conn = mariadb.connect(**{
-    "user": "411077015",
-    "password": "411077015",
+    "user": "411077022",
+    "password": "411077022",
     "host": "140.127.74.226",
-    "database": "411077015"
+    "database": "411077022"
 })
 
 cursor = conn.cursor()
 
 sql = """
 
-SELECT buyer_account, SUM(price*amount) AS total_spent
-FROM `411077005`.sales_record
-LEFT JOIN `411077005`.shipment ON sales_record.shipping_tracking_number = shipment.shipping_tracking_number
-LEFT JOIN `411077005`.commodity ON shipment.commodity_name = commodity.name
-WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND lost <> 1
-GROUP BY buyer_account
-ORDER BY total_spent DESC
-LIMIT 1;
+SELECT item.`item_name`
+FROM `411077022`.stock
+INNER JOIN `411077022`.item ON stock.`item_id` = item.`item_id`
+WHERE stock.`stock_amount` = '0' AND stock.`stock_address` LIKE '%高姓市%'
+GROUP BY item.`item_name`;
+
+
 
 """
 

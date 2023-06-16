@@ -1,26 +1,31 @@
-#
+#查找過去一年中以價格計算購買金額最高的客戶。
 
 import mariadb
 
 conn = mariadb.connect(**{
-    "user": "411077015",
-    "password": "411077015",
+    "user": "411077022",
+    "password": "411077022",
     "host": "140.127.74.226",
-    "database": "411077015"
+    "database": "411077022"
 })
 
 cursor = conn.cursor()
 
 sql = """
 
-SELECT buyer_account, SUM(price*amount) AS total_spent
-FROM `411077005`.sales_record
-LEFT JOIN `411077005`.shipment ON sales_record.shipping_tracking_number = shipment.shipping_tracking_number
-LEFT JOIN `411077005`.commodity ON shipment.commodity_name = commodity.name
-WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND lost <> 1
-GROUP BY buyer_account
-ORDER BY total_spent DESC
-LIMIT 1;
+SELECT `name`, MAX(`sum`)
+FROM (
+  SELECT user_order.`id`, user.`name`, SUM(`order`.`sum`) AS `sum`
+  FROM `411077022`.user_order
+  INNER JOIN `411077022`.user ON user_order.`id` = user.`id`
+  INNER JOIN `411077022`.`order` ON `order`.`order_id` = user_order.`order_id`
+  WHERE `order`.paying_status_id = 2
+    AND `order`.paying_date >= '2022-01-01 00:00:00'
+    AND `order`.paying_date < '2023-01-01 00:00:00'
+  GROUP BY user_order.`id`, user.`name`
+) AS the_most_spend_user;
+
+
 
 """
 

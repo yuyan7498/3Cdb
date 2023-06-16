@@ -1,26 +1,32 @@
-#
+#查找過去一年中按銷售金額計算的前2個產品。
 
 import mariadb
 
 conn = mariadb.connect(**{
-    "user": "411077015",
-    "password": "411077015",
+    "user": "411077022",
+    "password": "411077022",
     "host": "140.127.74.226",
-    "database": "411077015"
+    "database": "411077022"
 })
 
 cursor = conn.cursor()
 
 sql = """
 
-SELECT buyer_account, SUM(price*amount) AS total_spent
-FROM `411077005`.sales_record
-LEFT JOIN `411077005`.shipment ON sales_record.shipping_tracking_number = shipment.shipping_tracking_number
-LEFT JOIN `411077005`.commodity ON shipment.commodity_name = commodity.name
-WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND lost <> 1
-GROUP BY buyer_account
-ORDER BY total_spent DESC
-LIMIT 1;
+SELECT CONCAT(item.`item_name`, specification.`specification_name`) AS `item_name`,
+       (item_order.`amount` * specification.`specification_amount` * item.`price`) AS `item_cost`
+FROM `411077022`.item_order
+LEFT JOIN `411077022`.item_group ON item_group.`group_name` = item_order.`group_name`
+LEFT JOIN `411077022`.specification ON item_order.`specification_id` = specification.`specification_id`
+LEFT JOIN `411077022`.item ON specification.`item_id` = item.`item_id`
+LEFT JOIN `411077022`.order ON item_order.`order_id` = `order`.`order_id`
+WHERE `order`.paying_status_id = 2
+  AND `order`.paying_date >= '2022-01-01 00:00:00'
+  AND `order`.paying_date < '2023-01-01 00:00:00'
+GROUP BY `item_name`, item_group.`group_name`, `item_cost`
+ORDER BY `item_cost` DESC
+LIMIT 2;
+
 
 """
 
