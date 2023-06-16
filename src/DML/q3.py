@@ -16,7 +16,7 @@ sql = """
 SELECT item.`item_name`
 FROM `411077022`.stock
 INNER JOIN `411077022`.item ON stock.`item_id` = item.`item_id`
-WHERE stock.`stock_amount` = '0' AND stock.`stock_address` LIKE '%高姓市%'
+WHERE stock.`stock_amount` = 0 AND stock.`stock_address` LIKE '%高雄市%'
 GROUP BY item.`item_name`;
 
 
